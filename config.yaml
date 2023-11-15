@@ -1,0 +1,57 @@
+---
+
+- hosts: repository
+  become: true
+  pre_tasks:
+
+  - name: Install updates (CentOS)
+    yum:
+      update_only: yes
+      update_cache: yes
+    when: ansible_distribution == "CentOS"
+
+  - name: Install updates (Ubuntu)
+    apt:
+      upgrade: dist
+      update_cache: yes
+    when: ansible_distribution == "Ubuntu"
+
+- hosts: elasticstack
+  become: true
+  roles:
+    - elastic
+
+- hosts: elasticstack
+  become: true
+  roles:
+    - kibana
+
+- hosts: elasticstack
+  become: true
+  roles:
+    - logstash
+
+- hosts: nagios
+  become: true
+  roles:
+    - nagios
+
+- hosts: prometheus
+  become: true
+  roles:
+    - prometheus
+
+- hosts: grafana
+  become: true
+  roles:
+    - grafana
+
+- hosts: influxdb
+  become: true
+  roles:
+    - influxdb
+
+- hosts: Lampstack
+  become: true
+  roles:
+    - lampstack
